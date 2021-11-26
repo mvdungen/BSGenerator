@@ -1,0 +1,21 @@
+.quote-container {
+    margin: 0px 15vw;
+    border-top: 3px solid lightgray;
+    opacity: 1;
+    transition: opacity 2s; 
+}
+
+.fade {
+    opacity: 0;
+} 
+
+.quote-container .quote {
+    padding-top: 20px;
+    font-size: x-large;
+}
+
+.quote-container .quote-author {
+    padding-top: 20px;
+    font-style: italic;
+    text-align: right;
+}

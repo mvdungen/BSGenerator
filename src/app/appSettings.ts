@@ -23,7 +23,7 @@ export const appSettings: IAppSettings = {
 	},
 	// quote refreshing options
 	autoRefreshQuote: false,
-	autoRefreshQuoteInterval: 15,
+	autoRefreshQuoteInterval: 5,
 	// timer options
 	showTimer: false,
 	defaultTimerMinutes: 10,

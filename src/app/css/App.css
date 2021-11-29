@@ -1,4 +1,35 @@
+.container {
+	height: 100vh;
+	display: grid;
+	grid-template-columns: 1fr;
+	grid-template-rows: 1fr 50px;
+	grid-auto-rows: 1fr;
+	gap: 0px;
+	grid-auto-flow: row;
+	grid-template-areas:
+		'app-container'
+		'app-footer';
+}
+
 .app-container {
-  text-align: center;
-  margin: 15% auto;
+	grid-area: app-container;
+	background-color: var(--bgcolor-main);
+	text-align: center;
+	/* control items in grid	 */
+	display: flex;
+	flex-direction: column;
+}
+
+.app-footer {
+	grid-area: app-footer;
+	background-color: var(--bgcolor-footer);
+		/* control items in grid	 */
+	display: flex;
+	flex-direction: row;
+}
+
+.grid-content {
+	align-content: center;
+	justify-content: center;
+	align-items: center;
 }

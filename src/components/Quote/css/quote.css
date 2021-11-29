@@ -1,21 +1,25 @@
 .quote-container {
-    margin: 0px 15vw;
-    border-top: 3px solid lightgray;
-    opacity: 1;
-    transition: opacity 2s; 
+	margin: 0px 15vw;
+	opacity: 0.6;
 }
 
-.fade {
-    opacity: 0;
-} 
+.fadeIn {
+	opacity: 1;
+	transition: opacity var(--quote-animation-timer);
+	-webkit-transition: opacity var(--quote-animation-timer);
+}
+
+.fadeOut {
+	opacity: 0;
+	transition: opacity var(--quote-animation-timer);
+	-webkit-transition: opacity var(--quote-animation-timer);
+}
 
 .quote-container .quote {
-    padding-top: 20px;
-    font-size: x-large;
+	padding: 20px 50px;
+	font-size: x-large;
 }
 
-.quote-container .quote-author {
-    padding-top: 20px;
-    font-style: italic;
-    text-align: right;
+.quote-container .author {
+	font-style: italic;
 }

@@ -24,11 +24,9 @@ describe('fnQuote - function getQuote', () => {
 	test('fnQuote - function getAuthor', () => {
 		// generate quote with test data
 		const author: string = getAuthor({
-			data: {
-				names: ['test'],
-			},
+			data: { FIRST: ['test'], LAST: ['test'] },
 		});
 		// test
-		expect(author).toEqual('test');
+		expect(author).toEqual('test test');
 	});
 });

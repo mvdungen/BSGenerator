@@ -12,14 +12,9 @@ export function getQuote(props: { data: IDataElements }): string {
 	let _quote: string = '';
 	// build quote from main data parts
 	for (const PART in props.data) {
-		// get random item to retrieve
-		const _rndNr: number = getRandomNumber({
-			min: 0,
-			max: props.data[PART].length - 1,
-		});
-		// add to sentence
+		// get random element and add to quote
 		_quote = `${_quote}${_quote.length === 0 ? '' : ' '}${
-			props.data[PART][_rndNr]
+			getRandomElementFromArray({arr: props.data[PART]})
 		}`;
 	}
 	// return
@@ -33,11 +28,32 @@ export function getQuote(props: { data: IDataElements }): string {
  * @returns string, name
  */
 export function getAuthor(props: { data: IAuthorElements }): string {
-	// get random item to retrieve
+	// initialize
+	let _author: string = '';
+	// build author from author elements
+	for (const NAMEPART in props.data) {
+		// get random element
+		_author = `${_author}${_author.length === 0 ? '' : ' '}${
+			getRandomElementFromArray({arr: props.data[NAMEPART]})
+		}`;
+	}
+	// return author
+	return _author;
+}
+
+/**
+ * @function getRandomElementFromArray
+ * @description Returns a random element from passed array
+ * @param arr<Array>, array to retrieve from
+ * @returns array element
+ */
+export function getRandomElementFromArray<T>(props: { arr: T[] }): T {
+	// get random element from passed array, currently only implemented for
+	// arrays with strings, numbers, not objects!
 	const _rndNr: number = getRandomNumber({
 		min: 0,
-		max: props.data['names'].length - 1,
+		max: props.arr.length - 1,
 	});
-	// return author
-	return props.data['names'][_rndNr];
+	// return
+	return props.arr[_rndNr];
 }

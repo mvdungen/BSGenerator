@@ -1,3 +1,9 @@
+:root {
+  --bgcolor-main: white;
+  --bgcolor-footer: lightgray;
+  --quote-animation-timer: 2s;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

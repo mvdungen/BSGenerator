@@ -1,7 +1,8 @@
-import React, { createContext, useState, useEffect } from 'react';
+import React, { createContext } from 'react';
 // interfaces and components
 import { appSettings, IAppSettings } from './appSettings';
-import { Quote } from '../components/Quote/Quote';
+// import { Quote } from '../components/Quote/Quote';
+import TimerController from '../components/Timers/TimerController';
 import { initializeIcons } from '@fluentui/react';
 // styling
 import './css/App.css';
@@ -13,47 +14,13 @@ function App() {
 	// fluent design thingies
 	initializeIcons();
 
-	const [refreshQuote, setRefreshQuote] = useState<boolean>(false);
-
-	useEffect(() => {
-		// add hotkeys to body
-		const _body: HTMLBodyElement | null = document.querySelector('body');
-
-		function bodyKeyPress(ev: KeyboardEvent) {
-			// check appropriate keys
-			switch (ev.key) {
-				case 't':
-					// show timer
-					break;
-				case 'r':
-					// stop bubbling
-					ev.preventDefault();
-					// refresh quote
-					setRefreshQuote(!refreshQuote);
-					break;
-				default:
-				// do nothing...
-			}
-		}
-
-		// check
-		if (_body) {
-			_body.addEventListener('keypress', ev => bodyKeyPress(ev));
-		}
-
-		// unmount > cleanup
-		return () => {
-			// remove event listners
-			if (_body) {
-				_body.removeEventListener('keypress', ev => bodyKeyPress(ev));
-			}
-		};
-	});
-
 	return (
 		<appContext.Provider value={{ ...appSettings }}>
-			<div className='app-container'>
-				<Quote refresh={refreshQuote} />
+			<div className='container'>
+				<div className='app-container grid-content'>
+					<TimerController />
+				</div>
+				<div className='app-footer grid-content'></div>
 			</div>
 		</appContext.Provider>
 	);

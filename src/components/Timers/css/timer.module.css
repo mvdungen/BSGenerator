@@ -1,0 +1,22 @@
+
+.app-container {
+    flex-direction: row !important;
+}
+
+.container {
+    margin: auto;
+}
+
+.visual {
+    font-size: 4rem;
+    font-family: monospace;
+}
+
+.containerButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+    font-size: 1.5rem;
+}
+

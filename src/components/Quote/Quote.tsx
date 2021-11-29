@@ -1,19 +1,13 @@
-import React, {
-	useContext,
-	useState,
-	useEffect,
-	useCallback,
-} from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 // components
 import { IAppSettings } from '../../app/appSettings';
 import { appContext } from '../../app/App';
 import { getQuote, getAuthor } from './fnQuote';
+import { Separator } from '@fluentui/react';
 // styling
 import './css/quote.css';
 
-export interface IQuoteProps {
-	refresh: boolean;
-}
+export interface IQuoteProps {}
 
 export interface IQuoteState {
 	isLoading: boolean;
@@ -27,8 +21,6 @@ export function Quote(props: IQuoteProps) {
 	// initialize
 	const ctxApp = useContext<IAppSettings>(appContext);
 
-	// const currentQuote = useRef<string>('');
-
 	// state
 	const [quoteState, setQuoteState] = useState<IQuoteState>({
 		isLoading: true,
@@ -36,41 +28,46 @@ export function Quote(props: IQuoteProps) {
 		author: '',
 	});
 
-	const reloadQuoteHandler = useCallback(() => {
-		// function called from either the refresh quote button or the window timer interval
-		// both retrieved from the app context, e.g. showRefreshQuoteButton / autoRefreshQuote
-		const _quote: string = getQuote({ data: ctxApp.data.parts });
-		const _author: string = getAuthor({ data: ctxApp.data.authors });
-		// set state
-		setQuoteState({
-			isLoading: false,
-			quote: _quote,
-			author: _author,
-		});
-	}, [ctxApp]);
+	// mount > add listners and auto refresh timers ---------------------------
 
-	// // function > fade out
-	// function toggleQuoteFade(direction: TYPEFadeDirection) {
-	// 	// get qoute container
-	// 	const _elm: any = document.getElementsByClassName('quote-container');
-	// 	// check if there is a container
-	// 	if (_elm && _elm.length === 1) {
-	// 		// get container
-	// 		const _container: HTMLDivElement = _elm[0];
-	// 		// toggle fade
-	// 		console.log('container class', _container.classList);
-	// 		if (direction === 'FadeOut') {
-	// 			_container.classList.add('fade');
-	// 		} else {
-	// 			_container.classList.remove('fade');
-	// 		}
-	// 	}
-	// }
-
-	// quote > initalizer
 	useEffect(() => {
-		console.log('init');
-		// init
+		function bodyKeyPress(ev: KeyboardEvent) {
+			// check appropriate keys
+			switch (ev.key) {
+				case 'r': // refresh quote
+					// stop bubbling
+					ev.preventDefault();
+					// refresh quote
+					reloadQuoteHandlerX();
+					break;
+				default:
+				// do nothing...
+			}
+		}
+
+		function reloadQuoteHandlerX() {
+			// function called from either the refresh quote button or the window timer interval
+			// both retrieved from the app context, e.g. showRefreshQuoteButton / autoRefreshQuote
+			const _quote: string = getQuote({ data: ctxApp.data.parts });
+			const _author: string = getAuthor({ data: ctxApp.data.authors });
+			// set state
+			setQuoteState({
+				isLoading: false,
+				quote: _quote,
+				author: _author,
+			});
+		}
+
+		// add hotkeys to body
+		const _body: HTMLBodyElement | null = document.querySelector('body');
+
+		// body present > add keypress event listner
+		if (_body) {
+			console.log('setting up listners...');
+			_body.addEventListener('keypress', ev => bodyKeyPress(ev));
+		}
+
+		// auto refresh quote
 		let _intervalHandle: number = 0;
 		// check app settings
 		if (ctxApp.autoRefreshQuote) {
@@ -78,41 +75,39 @@ export function Quote(props: IQuoteProps) {
 			_intervalHandle = window.setInterval(() => {
 				console.log('timeout');
 				// update quote
-				reloadQuoteHandler();
+				reloadQuoteHandlerX();
 			}, ctxApp.autoRefreshQuoteInterval * 1000);
 		}
-		// set state
-		reloadQuoteHandler();
 
-		// unmount > clean up
+		// set first quote
+		reloadQuoteHandlerX();
+
+		// unmount > cleanup --------------------------------------------------
 		return () => {
-			// shut down interval
-			window.clearInterval(_intervalHandle);
+			if (_body) {
+				// remove event listners
+				_body.removeEventListener('keypress', ev => bodyKeyPress(ev));
+				// shut down interval
+				window.clearInterval(_intervalHandle);
+			}
 		};
-	}, [ctxApp, reloadQuoteHandler]);
-
-	// // quote > toggle fade on container
-	// useEffect(() => {
-	// 	if (quoteState.quote !== currentQuote.current) {
-	// 		// fade out
-	// 		toggleQuoteFade('FadeIn');
-	// 		// save current quote
-	// 		currentQuote.current = quoteState.quote;
-	// 	}
-	// }, [quoteState]);
+	}, [ctxApp]);
 
 	//
 	// render
 	//
 	if (quoteState.isLoading) {
-		// loading quote > do nothing
+		// loading > do nothing
 		return null;
 	} else {
-		// quote loaded > show quote
+		// loaded > show quote
 		return (
 			<div className='quote-container'>
-				<div className='quote'>{quoteState.quote}</div>
-				<div className='quote-author'>{quoteState.author}</div>
+				<Separator className='author'>{quoteState.author}</Separator>
+				<div>
+					<div className='quote'>{quoteState.quote}</div>
+				</div>
+				<Separator />
 			</div>
 		);
 	}
